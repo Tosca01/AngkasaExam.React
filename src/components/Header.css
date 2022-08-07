@@ -1,0 +1,6 @@
+.bg-logo {
+    background-image: url('../../public/images/angkasa-logo-only.svg');
+    width: 2.5rem;
+    height: 2.5rem;
+    background-repeat: no-repeat;
+}
