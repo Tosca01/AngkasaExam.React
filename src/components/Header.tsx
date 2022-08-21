@@ -1,6 +1,8 @@
-import React from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../App';
+import { ResponseStatus } from '../models/responsestatus';
+import AuthService from '../services/Auth.service';
 import './Header.css';
 
 const ButtonDaftarSoal = () => {
@@ -32,6 +34,19 @@ const ButtonDaftarSoal = () => {
 }
 
 const Header = () => {
+    const authService = new AuthService;
+    const navigate = useNavigate();
+
+    const [state, , ,setUsernameState] = useContext(GlobalContext);
+    const isMatch = matchPath('/ujian', useLocation().pathname);
+
+    const handleLogout = () => {
+        authService.logout().then(response => {
+            if(response.status === ResponseStatus.Success) {
+                navigate('/auth/login');
+            }
+        });
+    }
 
     return (
         <nav className="flex items-center justify-between flex-wrap bg-white border-b shadow-sm">
@@ -48,25 +63,36 @@ const Header = () => {
                 </button>
             </div>
             <div className="w-full md:w-auto lg:w-auto md:flex lg:flex items-center hidden" id="extend-nav">
-                <ul className="flex mr-3">
-                    <li className="dropdown z-40">
-                        <button id="toggleBtn" className="flex px-3 py-2 m-auto font-semibold text-sm
-                            text-gray-700 hover:text-gray-900 focus:outline-none items-center">
-                            <img src="/images/user.svg" alt=""
-                            className="w-8 h-8 rounded-full object-cover" />
-                            <span className="ml-2">Mohammad Arfan Maulana</span>
-                        </button>
-                        <ul className="dropdown-menu w-48 absolute md:right-0 lg:right-0 bg-white shadow hidden text-gray-700 rounded">
-                            <li>
-                                <a className="w-full rounded-t hover:bg-gray-400 py-2 px-6 block whitespace-no-wrap" href="{{ route('ujian.account') }}">Profile</a>
-                            </li>
-                            <li>
-                                <a className="w-full rounded-b hover:bg-gray-400 py-2 px-6 block whitespace-no-wrap" href="{{ route('logout') }}">Logout</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            
+                <GlobalContext.Consumer>
+                    {
+                        value => {
+                            const [ state, , , , setDropdownOpen ] = value;
+                            return(
+                                <ul className="flex mr-3">
+                                    <li className="dropdown z-40">
+                                        <button id="toggleBtn" className="flex px-3 py-2 m-auto font-semibold text-sm
+                                        text-gray-700 hover:text-gray-900 focus:outline-none items-center" onClick={() => setDropdownOpen(!state.dropdownOpen)}>
+                                            <img src="/images/user.svg" alt="" className="w-8 h-8 rounded-full object-cover" />
+                                            <span className="ml-2">{state.username}</span>
+                                        </button>
+                                        {!isMatch ? (
+                                            <ul className={(isMatch ? 'hidden' : '') + "dropdown-menu w-48 absolute md:right-0 lg:right-0 bg-white shadow hidden text-gray-700 rounded " + (state.dropdownOpen ? 'nav-show' : '')}>
+                                                <li>
+                                                    <a className="w-full rounded-t hover:bg-gray-400 py-2 px-6 block whitespace-no-wrap" href="{{ route('ujian.account') }}">Profile</a>
+                                                </li>
+                                                <li>
+                                                    <a className="w-full rounded-b hover:bg-gray-400 py-2 px-6 block whitespace-no-wrap cursor-pointer"
+                                                    onClick={handleLogout}>Logout</a>
+                                                </li>
+                                            </ul>
+                                        ): (<ul></ul>)}
+                                    </li>
+                                </ul>
+                            )
+                        }
+                    }
+                </GlobalContext.Consumer>
+                
                 <ButtonDaftarSoal />
             </div>
         </nav>  
