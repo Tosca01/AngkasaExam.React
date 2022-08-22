@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import './App.css';
 import './extension.css';
 import Exam from './pages/Exam';
+import Finished from './pages/Finished';
 import ExamLayout from './layouts/ExamLayout';
 import AuthLayout from './layouts/AuthLayout';
 import AuthGuard from './guard/AuthGuard';
@@ -109,6 +110,7 @@ export default class App extends Component {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/ujian" element={<Exam />} />
+              <Route path='/selesai' element={<Finished />} />
             </Route>
           </Route>
          
