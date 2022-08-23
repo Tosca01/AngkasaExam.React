@@ -26,7 +26,7 @@ export default class App extends Component {
     isLogged: false,
     username: '',
     nis: '',
-    loading: true,
+    loading: false,
   }
 
   //#region Set State
