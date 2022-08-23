@@ -1,4 +1,5 @@
 import React, { CSSProperties, useContext } from 'react';
+import { Outlet } from 'react-router-dom';
 import { BarLoader } from 'react-spinners';
 import { GlobalContext } from '../App';
 
@@ -14,10 +15,16 @@ const GlobalLoader = () => {
         borderColor: "red",
     }
 
+    if(state.loading) {
+        return (
+            <div className={"h-full w-100 items-center " + (state.loading ? 'flex' : 'hidden')}>
+                <BarLoader loading={state.loading} cssOverride={loadingStyles} color="#3498db" />
+            </div>
+        )
+    }
+
     return (
-        <div className="h-full w-100 flex items-center">
-            <BarLoader loading={state.loading} cssOverride={loadingStyles} color="#3498db" />
-        </div>
+        <Outlet />
     )
 }
 
