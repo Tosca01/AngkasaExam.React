@@ -1,8 +1,7 @@
 import Axios, { AxiosInstance } from "axios";
-import Murid from "../models/murid.model";
 
 export default class Auth {
-    endpoint: string = process.env.REACT_APP_API_URL!;
+    endpoint: string = import.meta.env.REACT_APP_API_URL!;
 
     axiosInstance:AxiosInstance;
 
