@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, CSSProperties } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../App";
 import AuthService from "../services/Auth.service";
@@ -10,8 +10,10 @@ const AuthGuard = () => {
     const [state, , setLogged, setUsername] = useContext(GlobalContext);
 
     const authService = new AuthService();
-
+    
     useEffect(() => {
+        setLoading(true);
+        
         if(isLoading && !state.isLogged) {
             authService.isLogged().then((response:any) => {
                 if(response == null || response == undefined || response == "") {

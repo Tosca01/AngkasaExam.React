@@ -10,6 +10,8 @@ import Finished from './pages/Finished';
 import ExamLayout from './layouts/ExamLayout';
 import AuthLayout from './layouts/AuthLayout';
 import AuthGuard from './guard/AuthGuard';
+import { TextSize } from './models/text-size.enum';
+import GlobalLoader from './components/GlobalLoader';
 
 export interface IGlobal {
   sidebarOpen: boolean;
@@ -27,6 +29,7 @@ export default class App extends Component {
     username: '',
     nis: '',
     loading: false,
+    textSize: TextSize.Small
   }
 
   //#region Set State
@@ -65,6 +68,12 @@ export default class App extends Component {
       loading: state
     })
   }
+
+  setTextSize = (size: TextSize) => {
+    this.setState({
+      textSize: size
+    })
+  }
   // #endregion
 
   componentDidMount() {
@@ -99,7 +108,8 @@ export default class App extends Component {
       this.setLogged,
       this.setUsernameState,
       this.setDropdownOpen,
-      this.setLoading
+      this.setLoading,
+      this.setTextSize
     ];
 
     return (
